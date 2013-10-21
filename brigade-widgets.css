@@ -1,0 +1,63 @@
+.brigade-widget-header {
+  width: 100%;
+  border-bottom: 1px solid #CCC;
+  font-size: 120%;
+  font-weight: bolder;
+  padding-bottom: 3px;
+  text-align: center;
+}
+
+.brigade-widget-box {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid #CCC;
+  margin-bottom: 10px;
+}
+
+/* Menus */
+#brigade-widget-menu {
+  float:left;
+  width:100%;
+  background:#fff;
+  border-bottom:4px solid #000;
+  overflow:hidden;
+  position:relative;
+}
+#brigade-widget-menu ul {
+  clear:left;
+  float:left;
+  list-style:none;
+  margin:0;
+  padding:0;
+  position:relative;
+  left:50%;
+  text-align:center;
+}
+#brigade-widget-menu ul li {
+  display:block;
+  float:left;
+  list-style:none;
+  margin:0;
+  padding:0;
+  position:relative;
+  right:50%;
+}
+#brigade-widget-menu ul li a {
+  display:block;
+  margin:0 0 0 1px;
+  padding:3px 10px;
+  background:#ddd;
+  color:#000;
+  text-decoration:none;
+  line-height:1.3em;
+}
+#brigade-widget-menu ul li a:hover {
+  background:#369;
+  color:#fff;
+}
+#brigade-widget-menu ul li a.active,
+#brigade-widget-menu ul li a.active:hover {
+  color:#fff;
+  background:#000;
+  font-weight:bold;
+}

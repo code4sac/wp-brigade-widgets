@@ -62,6 +62,7 @@ class gitHub_Repos extends WP_Widget {
 
     ?>
     <style>
+    <?php include('brigade-widgets.css');?>
     .github-menu ul {
       list-style-type: none;
       margin: 0;
@@ -75,42 +76,43 @@ class gitHub_Repos extends WP_Widget {
       display: inline-block;
       padding-right: 10px;
     }
-    .github-widget-box {
-      border: 1px solid #CCC;
-      padding: 5px;
-    }
-    .github-widget-header {
-      width: 100%;
-      border-bottom: 1px solid #CCC;
-      font-size: 120%;
-      font-weight: bolder;
-      padding-bottom: 3px;
-      text-align: center;
-    }
     .github-widget-section {
       font-weight: bold;
       padding-top: 10px;
       padding-bottom: 3px;
     }
+    .fleft {
+      float: left;
+    }
+    .github-widget-name {
+      width: 180px;
+    }
     </style>
-    <div class="github-widget-box">
-      <div class="github-widget-header">
+    <div class="brigade-widget-box">
+      <div class="brigade-widget-header">
         GitHub Resources
       </div>
-      <div class="github-menu">
+      <div id="brigade-widget-menu">
        <ul>
         <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>">Code</a></li>
-        <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/issues">Issues (<?php echo $issues_count; ?>)</a></li> 
+        <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/issues">Todo / Issuess (<?php echo $issues_count; ?>)</a></li> 
         <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/wiki">Wiki</a></li>
        </ul>
       </div>
       <div class="github-widget-section">Commits</div>
       <?php
+
+      /* Display Contributors
+       * ==================== */
       if(count($contributors > 0)) {
         foreach($contributors as $name => $count) {
-          print "<div>$name - ($count)</div>";
+     //     print "<div>$name - ($count)</div>";
+          print "<div class='fleft github-widget-name'>".$name."</div><div class=''>".$count."</div>";
         }
       }
+
+      /* Display Clone URL
+       * ================= */
       ?>
       <div class="github-widget-section">HTTPS clone URL</div>
       <input name="clone-path" type="text" size="25" value="<?php echo $clone_url;?>" />

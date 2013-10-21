@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Meetup Widget
-Plugin URI: https://github.com/code4sac/wp-github-widget
+Plugin URI: https://github.com/code4sac/wp-brigade-widgets
 Description: A Sidebar widget to display meetups from Meetup.com
 Version: 0.1
 Author: Kaleb Clark (Code4Sac)
@@ -23,55 +23,58 @@ class cfa_meetup extends WP_Widget {
 
     $request = WP_Http;
 
-    $url = "https://api.meetup.com/2/events?&sign=true&group_urlname=".$group_name."&page=3".$api_key;
+    $url = "https://api.meetup.com/2/events?&sign=true&group_urlname=".$group_name."&page=4".$api_key;
 
     $res      = wp_remote_get($url);
     $events   = json_decode($res['body'], true);
     ?>
     <style>
-    .meetup-widget-box {
-      width: 100%;
-      padding: 4px;
-      border: 1px solid #CCC;
-    }
+    <?php include('brigade-widgets.css'); ?>
     .meetup-widget-date{
-      font-size: 110%;
       font-weight: bold;
     }
     .meetup-widget-time {
 
     }
     .meetup-widget-title {
-      font-size: 120%;
+      font-size: 110%;
       font-weight: bolder;
     }
     .meetup-widget-rsvp {
       cursor: pointer;
       font-weight: bolder;
       text-align: center;
-      height: 20px;
+      height: 23px;
       width: 100px;
       margin-top: 10px;
       margin-right: 4px;
       margin-left: 4px;
       background-color: #62ac75;
       border: 1px solid #000;
-      padding-top: 5px;
       display: block;
       text-decoration: none;
       color: #000;
     }
-    .meetup-widget-rsvp a:hover {
+    .meetup-widget-rsvp  {
+      color: #000; 
+    }
+    .meetup-widget-rsvp:hover {
+      color: #000;
       text-decoration: none;
     }
-
+    .meetup-widget-rsvp:visited {
+      color: #000;
+    }
     .meetup-widget-count {
       margin-top: 3px;
       margin-bottom: 20px;
     }
 
     </style>
-    <div class="meetup-widget-box">
+    <div class="brigade-widget-box">
+    <div class="brigade-widget-header">
+      Meetups
+    </div>
     <?php
     foreach($events['results'] as $event) {
       if($event['status'] != 'upcoming') { continue; }    // Bail if not upcoming event
