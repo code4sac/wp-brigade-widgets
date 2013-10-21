@@ -8,11 +8,11 @@ Author: Kaleb Clark
 Author URI: http://www.abraxxus.net
 */
 
-class gitHub_Repos extends WP_Widget {
+class bw_github extends WP_Widget {
   public function __construct() {
     parent::__construct(
-      'github_widget', 
-      __('Github Repository', 'text_domain'),
+      'bw_github', 
+      __('Brigade Github Repository', 'text_domain'),
       array('description' => __('A Github Repository Widget', 'text_domain'), )
     );
   }
@@ -184,5 +184,5 @@ class gitHub_Repos extends WP_Widget {
 /* Register Widget
  * =============== */
 add_action( 'widgets_init',
-  create_function('', 'return register_widget("gitHub_Repos");')
+  create_function('', 'return register_widget("bw_github");')
 );

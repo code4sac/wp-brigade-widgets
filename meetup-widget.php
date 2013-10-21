@@ -8,11 +8,11 @@ Author: Kaleb Clark (Code4Sac)
 Author URI: https://github.com/KalebClark
 */
 
-class cfa_meetup extends WP_Widget {
+class bw_meetup extends WP_Widget {
   public function __construct() {
     parent::__construct(
-      'meetup_widget', 
-      __('Meetup Widget', 'text_domain'),
+      'bw_meetup', 
+      __('Brigade Meetup Widget', 'text_domain'),
       array('description' => __('A Meetup Widget', 'text_domain'), )
     );
   }
@@ -162,5 +162,5 @@ class cfa_meetup extends WP_Widget {
 /* Register Widget
  * =============== */
 add_action( 'widgets_init',
-  create_function('', 'return register_widget("cfa_meetup");')
+  create_function('', 'return register_widget("bw_meetup");')
 );
