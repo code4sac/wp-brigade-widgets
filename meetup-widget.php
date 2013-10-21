@@ -31,14 +31,13 @@ class cfa_meetup extends WP_Widget {
     <style>
     <?php include('brigade-widgets.css'); ?>
     .meetup-widget-date{
-      font-weight: bold;
     }
     .meetup-widget-time {
 
     }
     .meetup-widget-title {
-      font-size: 110%;
-      font-weight: bolder;
+      font-weight: bold;
+      text-decoration: underline;
     }
     .meetup-widget-rsvp {
       cursor: pointer;
@@ -66,14 +65,18 @@ class cfa_meetup extends WP_Widget {
       color: #000;
     }
     .meetup-widget-count {
-      margin-top: 3px;
+      margin-top: 4px;
+      padding-top: 5px;
+      padding-left: 25px;
       margin-bottom: 20px;
     }
-
+    .fleft {
+      float: left;
+    }
     </style>
     <div class="brigade-widget-box">
     <div class="brigade-widget-header">
-      Meetups
+      <?php echo $instance['bw_title'];?>
     </div>
     <?php
     foreach($events['results'] as $event) {
@@ -101,34 +104,38 @@ class cfa_meetup extends WP_Widget {
 
       ?>
       <div class="meetup-widget-event">
-        <div class="meetup-widget-title"><?php echo $event_title;?></div>
-        <div class="meetup-widget-date"><?php echo $event_date;?></div>
-        <div class="meetup-widget-time"><?php echo $event_time;?></div>
-        <a href="<?php echo $meetup_page;?>" class="meetup-widget-rsvp">RSVP</a>
+        <div class="meetup-widget-title"><a href="<?php echo $meetup_page;?>"><?php echo $event_title;?></a></div>
+        <div class="meetup-widget-date"><?php echo $event_date."&nbsp;&nbsp".$event_time;?></div>
+        <a href="<?php echo $meetup_page;?>" class="fleft meetup-widget-rsvp">RSVP</a>
         <div class="meetup-widget-count"><?php echo $attending;?> attending</div>
         
       </div>
       <?php
     }
-    ?></div><?php
+    ?></div>
+    <?php
 
   }
 
   public function form($instance) {
-    if( isset( $instance['group_name'])) {
-      $group_name = $instance['group_name'];
-    } else {
-      $group_name = __('Meetup Groupname', 'text_domain');
+    $instance = wp_parse_args( (array) $instance, array(
+      'bw_title'       => 'Widget Title',
+      'group_name'  => 'Meetup Groupname',
+      'api_key'     => 'Your API Key'
+    ));
+    foreach($instance as $field => $val) {
+      if( isset( $instance[$field])) {
+        $$field = strip_tags( $instance[$field]);
+      }
     }
-    if( isset( $instance['api_key'])) {
-      $api_key = $instance['api_key'];
-    } else {
-      $api_key = __('Meetup API Key', 'text_domain');
-    }
-
 
     ?>
     <p>
+    <label for="<?php echo $this->get_field_id('bw_title'); ?>">
+      <?php _e('Widget Title:'); ?>
+    </label>
+    <input class="widefat" type="text" id="<?php echo $this->get_field_id('bw_title'); ?>" name="<?php echo $this->get_field_name('bw_title'); ?>" value="<?php echo esc_attr($bw_title); ?>"/>
+
     <label for="<?php echo $this->get_field_id('group_name'); ?>">
       <?php _e('API Group Name:'); ?>
     </label>
@@ -144,8 +151,9 @@ class cfa_meetup extends WP_Widget {
 
   public function update($new_instance, $old_instance) {
     $instance = array();
+    $instance['bw_title']   = (!empty($new_instance['bw_title']))   ? strip_tags($new_instance['bw_title'])   : '';
     $instance['group_name'] = (!empty($new_instance['group_name'])) ? strip_tags($new_instance['group_name']) : '';
-    $instance['api_key']    = (!empty($new_instance['api_key']))    ? strip_tags($new_instance['api_key']) : '';
+    $instance['api_key']    = (!empty($new_instance['api_key']))    ? strip_tags($new_instance['api_key'])    : '';
 
     return $instance;
   }

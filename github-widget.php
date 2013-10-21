@@ -34,6 +34,7 @@ class gitHub_Repos extends WP_Widget {
     $clone_url  = $repo['clone_url'];
     $issue_url  = $repo['url']."/issues";
     $commit_url = $repo['url']."/events";
+    $repo_title = $repo['name'];
     if($repo['message'] == "Not Found") {
       return;
     }
@@ -87,11 +88,16 @@ class gitHub_Repos extends WP_Widget {
     .github-widget-name {
       width: 180px;
     }
+    .github-widget-repo-title {
+      font-weight: bold;
+      text-align: center;
+    }
     </style>
     <div class="brigade-widget-box">
       <div class="brigade-widget-header">
-        GitHub Resources
+        <?php echo $instance['bw_title'];?>
       </div>
+      <div class="github-widget-repo-title"><?php echo $gh_path;?></div>
       <div id="brigade-widget-menu">
        <ul>
         <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>">Code</a></li>
@@ -123,6 +129,17 @@ class gitHub_Repos extends WP_Widget {
   }
 
   public function form($instance) {
+    $instance = wp_parse_args( (array) $instance, array(
+      'bw_title'      => 'Widget Title',
+      'client_id'     => 'API Client ID',
+      'client_secret' => 'API Client Secret'
+    ));
+    foreach($instance as $field => $val) {
+      if( isset( $instance[$field])) {
+        $$field = strip_tags( $instance[$field]);
+      }
+    }
+    /*
     if( isset( $instance['client_id'])) {
       $client_id = $instance['client_id'];
     } else {
@@ -133,10 +150,14 @@ class gitHub_Repos extends WP_Widget {
     } else {
       $client_secret = __('github clientSecret', 'text_domain');
     }
-
+    */
 
     ?>
     <p>
+    <label for="<?php echo $this->get_field_id('bw_title'); ?>">
+      <?php _e('Widget Title:'); ?>
+    </label>
+    <input class="widefat" type="text" id="<?php echo $this->get_field_id('bw_title'); ?>" name="<?php echo $this->get_field_name('bw_title'); ?>" value="<?php echo esc_attr($bw_title); ?>"/>
     <label for="<?php echo $this->get_field_id('client_id'); ?>">
       <?php _e('API Client ID:'); ?>
     </label>
@@ -152,7 +173,8 @@ class gitHub_Repos extends WP_Widget {
 
   public function update($new_instance, $old_instance) {
     $instance = array();
-    $instance['client_id'] = (!empty($new_instance['client_id'])) ? strip_tags($new_instance['client_id']) : '';
+    $instance['bw_title']      = (!empty($new_instance['client_id']))     ? strip_tags($new_instance['bw_title'])  : '';
+    $instance['client_id']     = (!empty($new_instance['client_id']))     ? strip_tags($new_instance['client_id']) : '';
     $instance['client_secret'] = (!empty($new_instance['client_secret'])) ? strip_tags($new_instance['client_secret']) : '';
 
     return $instance;
