@@ -18,12 +18,18 @@ class bw_meetup extends WP_Widget {
   }
 
   public function widget($args, $instance) {
-    $group_name = $instance['group_name'];
-    $api_key    = "&key=".$instance['api_key'];
+    $group_name   = $instance['group_name'];
 
     $request = WP_Http;
 
-    $url = "https://api.meetup.com/2/events?&sign=true&group_urlname=".$group_name."&page=4".$api_key;
+    $url  = "https://api.meetup.com/2/events?";
+    $url .= "&sign=true";
+    $url .= "&group_urlname=".$group_name;
+    $url .= "&page=".$instance['num_to_show'];
+    $url .= "&key=".$instance['api_key'];
+
+    print $url;
+
 
     $res      = wp_remote_get($url);
     $events   = json_decode($res['body'], true);
@@ -119,9 +125,10 @@ class bw_meetup extends WP_Widget {
 
   public function form($instance) {
     $instance = wp_parse_args( (array) $instance, array(
-      'bw_title'       => 'Widget Title',
+      'bw_title'    => 'Widget Title',
       'group_name'  => 'Meetup Groupname',
-      'api_key'     => 'Your API Key'
+      'api_key'     => 'Your API Key',
+      'num_to_show' => '4'
     ));
     foreach($instance as $field => $val) {
       if( isset( $instance[$field])) {
@@ -146,6 +153,12 @@ class bw_meetup extends WP_Widget {
     </label>
     <input class="widefat" type="text" id="<?php echo $this->get_field_id('api_key'); ?>" name="<?php echo $this->get_field_name('api_key'); ?>" value="<?php echo esc_attr($api_key); ?>"/>
     </p>
+
+    <label for="<?php echo $this->get_field_id('num_to_show'); ?>">
+      <?php _e('Number of meetups to show:'); ?>
+    </label>
+    <input class="widefat" type="text" id="<?php echo $this->get_field_id('num_to_show'); ?>" name="<?php echo $this->get_field_name('num_to_show'); ?>" value="<?php echo esc_attr($num_to_show); ?>"/>
+    </p>
     <?php
   }
 
@@ -154,6 +167,7 @@ class bw_meetup extends WP_Widget {
     $instance['bw_title']   = (!empty($new_instance['bw_title']))   ? strip_tags($new_instance['bw_title'])   : '';
     $instance['group_name'] = (!empty($new_instance['group_name'])) ? strip_tags($new_instance['group_name']) : '';
     $instance['api_key']    = (!empty($new_instance['api_key']))    ? strip_tags($new_instance['api_key'])    : '';
+    $instance['num_to_show']= (!empty($new_instance['num_to_show']))? strip_tags($new_instance['num_to_show']): '';
 
     return $instance;
   }

@@ -19,16 +19,17 @@ class bw_github extends WP_Widget {
 
   public function widget($args, $instance) {
     $gh_path  = get_field('project_github');
-    $c_id     = $instance['client_id'];
-    $c_secret = $instance['client_secret'];
     list($gh_user, $gh_repo) = explode('/', $instance['repo']);
 
     $request = WP_Http;
-    $api_key_s = "?client_id=".$c_id."&client_secret=".$c_secret;
 
     /* check for repo
      * ============== */
-    $url  = "https://api.github.com/repos/".$gh_path.$api_key_s;
+    $url  = "https://api.github.com/repos/";
+    $url .= $gh_path;
+    $url .= "?client_id=".$instance['client_id'];
+    $url .= "&client_secret=".$instance['client_secret'];
+
     $res  = wp_remote_get($url);
     $repo = json_decode($res['body'], true);
     $clone_url  = $repo['clone_url'];
@@ -173,7 +174,7 @@ class bw_github extends WP_Widget {
 
   public function update($new_instance, $old_instance) {
     $instance = array();
-    $instance['bw_title']      = (!empty($new_instance['client_id']))     ? strip_tags($new_instance['bw_title'])  : '';
+    $instance['bw_title']      = (!empty($new_instance['bw_title']))     ? strip_tags($new_instance['bw_title'])  : '';
     $instance['client_id']     = (!empty($new_instance['client_id']))     ? strip_tags($new_instance['client_id']) : '';
     $instance['client_secret'] = (!empty($new_instance['client_secret'])) ? strip_tags($new_instance['client_secret']) : '';
 
