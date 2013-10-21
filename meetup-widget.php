@@ -3,7 +3,7 @@
 Plugin Name: Meetup Widget
 Plugin URI: https://github.com/code4sac/wp-brigade-widgets
 Description: A Sidebar widget to display meetups from Meetup.com
-Version: 0.1
+Version: 1.0
 Author: Kaleb Clark (Code4Sac)
 Author URI: https://github.com/KalebClark
 */
@@ -27,9 +27,6 @@ class bw_meetup extends WP_Widget {
     $url .= "&group_urlname=".$group_name;
     $url .= "&page=".$instance['num_to_show'];
     $url .= "&key=".$instance['api_key'];
-
-    print $url;
-
 
     $res      = wp_remote_get($url);
     $events   = json_decode($res['body'], true);

@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: GitHub Repository Sidebar widget
-Plugin URI: <>
+Plugin URI: https://github.com/code4sac/wp-brigade-widgets
 Description: A Sidebar widget to display information about a specific repository
-Version: 0.1
-Author: Kaleb Clark
-Author URI: http://www.abraxxus.net
+Version: 1.0
+Author: Kaleb Clark (Code4Sac)
+Author URI: https://github.com/KalebClark
 */
 
 class bw_github extends WP_Widget {
