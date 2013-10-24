@@ -113,7 +113,7 @@ class bw_github extends WP_Widget {
       <div id="brigade-widget-menu">
        <ul>
         <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>">Code</a></li>
-        <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/issues">Todo / Issuess (<?php echo $issues_count; ?>)</a></li> 
+        <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/issues">To Do / Issues (<?php echo $issues_count; ?>)</a></li> 
         <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/wiki">Wiki</a></li>
        </ul>
       </div>
