@@ -13,6 +13,12 @@
   border: 1px solid #CCC;
   margin-bottom: 10px;
 }
+.brigade-widget-box table,tr,td {
+  border: none !important;
+}
+.brigade-widget-box th {
+  padding-right: 5px;
+}
 
 /* Menus */
 #brigade-widget-menu {
