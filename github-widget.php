@@ -38,7 +38,8 @@ class bw_github extends WP_Widget {
     $repo = json_decode($res['body'], true);
     $clone_url  = $repo['clone_url'];
     $issue_url  = $repo['url']."/issues".$api_url;
-    $commit_url = $repo['url']."/events".$api_url;
+    //$commit_url = $repo['url']."/events".$api_url;
+    $commit_url = $repo['url']."/commits".$api_url."&per_page=10000000";
     $repo_title = $repo['name'];
     if($repo['message'] == "Not Found") {
       return;
@@ -54,14 +55,10 @@ class bw_github extends WP_Widget {
      * =========== */
     $commit_res  = wp_remote_get($commit_url);
     $commit_ret  = json_decode($commit_res['body'], true);
-    if(!isset($commit_ret['message'])) {
-      $contributors = array();
-      foreach($commit_ret as $event) {
-        if($event['type'] != 'PushEvent') { continue; };
-        foreach($event['payload']['commits'] as $commit) {
-          $contributors[$commit['author']['name']]++;
-        }
-      }
+    $contributors = array();
+    foreach($commit_ret as $commit) {
+      $name = $commit['commit']['author']['name'];
+      $contributors[$name]++;
     }
 
     /* Build Chart Data JSON
