@@ -18,7 +18,7 @@ class bw_github extends WP_Widget {
   }
 
   public function widget($args, $instance) {
-    $gh_path  = get_field('project_github');
+    $gh_path  = 'code4sac/sac-hash';
     list($gh_user, $gh_repo) = explode('/', $instance['repo']);
 
     $request = WP_Http;
@@ -61,6 +61,10 @@ class bw_github extends WP_Widget {
       $contributors[$name]++;
     }
 
+    /* sort commits high to low
+     * =========== */
+    arsort($contributors);
+
     /* Build Chart Data JSON
      * ===================== */
     if($instance['display_chart']) {
@@ -72,49 +76,32 @@ class bw_github extends WP_Widget {
     }
     ?>
     <style>
-    <?php include('brigade-widgets.css');?>
-    .github-menu ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      text-align: center;
+    .brigade-widget-authors {
+      max-height: 200px;
+      padding-bottom: 10px;
     }
-    .github-menu li {
-      display: inline;
+    .brigade-widget-box .progress {
+      height: 10px;
+      margin-bottom: 6px;
     }
-    .github-menu a {
-      display: inline-block;
-      padding-right: 10px;
-    }
-    .github-widget-section {
-      font-weight: bold;
-      padding-top: 10px;
-      padding-bottom: 3px;
-    }
-    .fleft {
-      float: left;
-    }
-    .github-widget-name {
-      width: 180px;
-    }
-    .github-widget-repo-title {
-      font-weight: bold;
-      text-align: center;
+    .brigade-widget-box .btn-group {
+      padding-bottom: 10px;
     }
     </style>
-    <div class="brigade-widget-box">
-      <div class="brigade-widget-header">
-        <?php echo $instance['bw_title'];?>
+    <div class="brigade-widget-box panel panel-default">
+      <div class="brigade-widget-header panel-heading">
+        <small class="pull-right"><?php echo $gh_path;?></small>
+        <h5 class="panel-title"><?php echo $instance['bw_title'];?></h5>
       </div>
-      <div class="github-widget-repo-title"><?php echo $gh_path;?></div>
-      <div id="brigade-widget-menu">
-       <ul>
-        <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>">Code</a></li>
-        <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/issues">To Do / Issues (<?php echo $issues_count; ?>)</a></li> 
-        <li><a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/wiki">Wiki</a></li>
-       </ul>
-      </div>
-      <div style="clear: both"></div>
+      <div class="panel-body">
+        <div id="brigade-widget-menu" class="text-center">
+          <div class="btn-group">
+            <a target="_blank" href="http://github.com/<?php echo $gh_path; ?>" class="btn btn-default">Code</a>
+            <a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/issues" class="btn btn-default">To Do / Issues <span class="badge"><?php echo $issues_count; ?></span></a>
+            <a target="_blank" href="http://github.com/<?php echo $gh_path; ?>/wiki" class="btn btn-default">Wiki</a>
+          </div>
+        </div>
+      <div class="brigade-widget-authors" style="clear: both">
       <?php
 
       /* Display Contributors
@@ -125,8 +112,10 @@ class bw_github extends WP_Widget {
       } else {
         // Display text
         if(count($contributors > 0)) {
+          $max_count = array_shift(array_values($contributors));
           foreach($contributors as $name => $count) {
-            print "<div class='fleft github-widget-name'>".$name."</div><div class=''>".$count."</div>";
+            $perc = $count/$max_count * 100;
+            print "<div class='pull-left github-widget-name'>".$name."</div><strong>&nbsp;".$count."</strong><div class='progress'><div class='progress-bar' role='progressbar' aria-valuemax='".$max_count."' aria-valuemin='0' aria-valuenow='".$count."' style='width: ".$perc."%;'></div></div>";
           }
         }
       }
@@ -134,8 +123,10 @@ class bw_github extends WP_Widget {
       /* Display Clone URL
        * ================= */
       ?>
-      <div class="github-widget-section">HTTPS clone URL</div>
-      <input name="clone-path" type="text" size="25" value="<?php echo $clone_url;?>" />
+      </div>
+      <h5>HTTPS clone URL</h5>
+      <input name="clone-path" class="form-control" type="text" size="25" value="<?php echo $clone_url;?>" />
+      </div>
     </div>
     <?php
     if($instance['display_chart']) { ?>
